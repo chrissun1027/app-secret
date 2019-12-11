@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
-const Post = mongoose.model("Post");
+const postModel = require('../models/userModel');
+const User = mongoose.model("User");
 
-exports.list_all_posts = (req, res) => {
-  Post.find({}, (error, posts) => {
+exports.list_all_users = (req, res) => {
+  User.find({}, (error, users) => {
     if(error){
       res.status(500);
       console.log(error);
@@ -10,15 +11,15 @@ exports.list_all_posts = (req, res) => {
     }
     else {
       res.status(200);
-      res.json(posts);
+      res.json(users);
     }
   })
 }
 
-exports.create_a_post = (req, res) => {
-  let new_post = new Post(req.body);
+exports.create_a_user = (req, res) => {
+  let new_user = new User(req.body);
 
-  new_post.save((error, post) => {
+  new_user.save((error, user) => {
     if(error){
       res.status(500);
       console.log(error);
@@ -26,13 +27,13 @@ exports.create_a_post = (req, res) => {
     }
     else {
       res.status(201);
-      res.json(post);
+      res.json(user);
     }
   })
 }
 
-exports.get_a_post = (req, res) => {
-  Post.findById(req.params.post_id, (error, post) => {
+exports.get_a_user = (req, res) => {
+  User.findById(req.params.user_id, (error, user) => {
     if(error){
       res.status(500);
       console.log(error);
@@ -40,13 +41,13 @@ exports.get_a_post = (req, res) => {
     }
     else {
       res.status(200);
-      res.json(post);
+      res.json(user);
     }
   })
 }
 
-exports.update_a_post = (req, res) => {
-  Post.findOneAndUpdate({_id: req.params.post_id}, req.body, {new: true}, (error, post) => {
+exports.update_a_user = (req, res) => {
+  User.findOneAndUpdate({_id: req.params.user_id}, req.body, {new: true}, (error, user) => {
     if(error){
       res.status(500);
       console.log(error);
@@ -54,13 +55,13 @@ exports.update_a_post = (req, res) => {
     }
     else {
       res.status(200);
-      res.json(post);
+      res.json(user);
     }
   })
 }
 
-exports.delete_a_post = (req, res) => {
-  Post.remove({_id: req.params.post_id}, (error) => {
+exports.delete_a_user = (req, res) => {
+  User.remove({_id: req.params.user_id}, (error) => {
     if(error){
       res.status(500);
       console.log(error);
@@ -68,7 +69,7 @@ exports.delete_a_post = (req, res) => {
     }
     else {
       res.status(200);
-      res.json({message: "Article supprimé"});
+      res.json({message: "Utilisateur supprimé"});
     }
   })
 }
