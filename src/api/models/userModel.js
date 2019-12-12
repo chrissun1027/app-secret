@@ -10,15 +10,19 @@ let userSchema = new Schema({
     type: String,
     required: "vous devez renseigner un mdp"
   },
-  groupName: {
+  group_name: {
     type: String,
-    required: "Le nom du groupe est requis"
+    required: "Le nom du group est requis"
   },
-  secretSanta:{
+  id_group: {
+    type: String,
+    default: null
+  },
+  secret_santa:{
     type: Boolean,
     default: false
   },
-  recipientName: {
+  recipient_name: {
     type: String,
     default: null
   }

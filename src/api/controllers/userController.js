@@ -45,6 +45,33 @@ exports.get_a_user = (req, res) => {
     }
   })
 }
+exports.get_users_by_id_group = (req, res) => {
+  User.find({id_group: req.params.id_group}, (error, user) => {
+    if(error){
+      res.status(500);
+      console.log(error);
+      res.json({message: "Erreur serveur."});
+    }
+    else {
+      res.status(200);
+      res.json(user);
+    }
+  })
+}
+
+exports.get_users_by_group_name = (req, res) => {
+  User.find({group_name: req.params.group_name}, (error, user) => {
+    if(error){
+      res.status(500);
+      console.log(error);
+      res.json({message: "Erreur serveur."});
+    }
+    else {
+      res.status(200);
+      res.json(user);
+    }
+  })
+}
 
 exports.update_a_user = (req, res) => {
   User.findOneAndUpdate({_id: req.params.user_id}, req.body, {new: true}, (error, user) => {

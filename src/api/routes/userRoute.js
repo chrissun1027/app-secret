@@ -9,4 +9,12 @@ module.exports = (app) => {
   .get(userController.get_a_user)
   .put(userController.update_a_user)
   .delete(userController.delete_a_user);
+
+  app.route('/users_by_id_group/:id_group')
+  .get(userController.get_users_by_id_group);
+
+  app.route('/users_by_group_name/:group_name')
+  .get(userController.get_users_by_group_name);
+
+
 }
