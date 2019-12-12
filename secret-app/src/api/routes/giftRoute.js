@@ -11,6 +11,4 @@ module.exports = (app) => {
     app.route('/gift_by_name_donee/:name_donee')
         .get(giftController.get_gift_by_name_donee);
 
-
-
 }
