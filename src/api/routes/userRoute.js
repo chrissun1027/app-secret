@@ -16,5 +16,5 @@ module.exports = (app) => {
   app.route('/users_by_group_name/:group_name')
   .get(userController.get_users_by_group_name);
 
-
+  
 }
