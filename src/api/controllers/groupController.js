@@ -74,7 +74,7 @@ exports.remove_group_userList_item = (req, res) => {
 }
 
 exports.delete_group = (req, res) => {
-    Group.remove({_id: req.params.group_name}, (error) => {
+    Group.remove({_id: req.params.group_id}, (error) => {
         if (error) {
             res.status(500);
             console.log(error);

@@ -23,4 +23,7 @@ userRoute(app);
 const groupRoute = require('./api/routes/groupRoute');
 groupRoute(app);
 
+const giftRoute = require('./api/routes/giftRoute');
+giftRoute(app);
+
 app.listen(port, hostname);
