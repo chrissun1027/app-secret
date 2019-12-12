@@ -10,5 +10,5 @@ docker-compose up
 
 ## Access to docker
 ```
-docker exec -ti docker_node_mongo_app_1 bash
+docker exec -ti docker-app-secret_app_1 bash
 ```
