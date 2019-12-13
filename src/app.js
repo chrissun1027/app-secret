@@ -1,7 +1,30 @@
 const express = require('express');
+const cors = require('cors');
+const passport = require('passport');
+const config = require('config');
+const logger = require('./utils/logger');
+
+require('./passport');
+
+const auth = require('./api/auth/authController');
+const user = require('./api/user/userController');
+
 const app = express();
+const { port, root } = config.get('api');
+
+function logErrors(err, req, res, next) {
+  logger.error(err);
+  next(err);
+}
+
+function clientErrorHandler(err, req, res, next) {
+  if (req.xhr) {
+    res.status(500).send({ error: 'Something went wrong.' });
+  } else {
+    next(err);
+  }
+}
 const hostname = '0.0.0.0';
-const port = 3000;
 
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
@@ -26,4 +49,21 @@ groupRoute(app);
 const giftRoute = require('./api/routes/giftRoute');
 giftRoute(app);
 
+
+app.use(cors());
+app.use(bodyParser.json());
+app.use(`${root}/auth`, auth);
+app.use(`${root}/users`, passport.authenticate('jwt', { session: false }), user);
+app.use(logErrors);
+app.use(clientErrorHandler);
+
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
+
 app.listen(port, hostname);
+
+
+
+
+
