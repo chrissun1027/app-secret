@@ -2,7 +2,10 @@
 ```
 127.0.0.1:3000
 ```
-
+## prérequis
+```
+les fichiers Dockerfile et docker-compose.yml doivent etre déplacer à l'extérieur de l'application app-secret 
+```
 ## Launch docker
 ```
 docker-compose up
