@@ -100,3 +100,49 @@ exports.delete_a_user = (req, res) => {
     }
   })
 }
+exports.santa_update = (res, username, usernameDonee) => {
+  User.findOneAndUpdate({name: username}, {recipient_name: usernameDonee}, {new: true}, (error, user) => {
+      if (error) {
+          res.status(500);
+          console.log(error);
+      } else {
+          res.status(200);
+      }
+  })
+  User.findOneAndUpdate({name: usernameDonee}, {secret_santa: true}, {new: true}, (error, user) => {
+      if (error) {
+          res.status(500);
+          console.log(error);
+      } else {
+          res.status(200)
+      }
+  })
+}
+
+exports.appointDonee = (res, userList, username) => {
+  let listDonee = [];
+  let recipient = null;
+
+  User.findOne({name: username}, (error, user) => {
+      if (error) {
+          res.status(500);
+          console.log(error);
+      } else {
+          recipient = user.recipient_name;
+          res.status(200);
+      }
+  }).then(() => {
+      if (recipient == null) {
+          userList.forEach((valueOfItem) => {
+              User.findOne({name: valueOfItem}, (error, user) => {
+                  if (!user.secret_santa && user.name != username) {
+                      listDonee.push(user.name);
+                  }
+              }).then(() => {
+                  let usernameDonee = listDonee[Math.floor(Math.random() * listDonee.length)]
+                  this.santa_update(res, username, usernameDonee);
+              })
+          })
+      }
+  })
+}

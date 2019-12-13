@@ -9,10 +9,13 @@ module.exports = (app) => {
         .get(groupController.get_a_group)
         .delete(groupController.delete_group);
 
-    app.route('/group/:group_name/add_user_list')
+    app.route('/group/:group_id/add_user_list')
         .put(groupController.add_group_userList_item);
 
-    app.route('/group/:group_name/remove_user_list')
+    app.route('/group/:group_id/remove_user_list')
         .put(groupController.remove_group_userList_item);
+
+    app.route('/group/:group_id/user_list/:user_name')
+        .put(groupController.draw_donee);
 
 }

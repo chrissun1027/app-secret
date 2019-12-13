@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const groupModel = require('../models/groupModel');
+const userController = require('../controllers/userController');
 const Group = mongoose.model("Group");
 
 exports.create_group = (req, res) => {
@@ -48,7 +49,9 @@ exports.get_a_group = (req, res) => {
 
 
 exports.add_group_userList_item = (req, res) => {
-    Group.findOneAndUpdate({_id: req.params.group_name}, {$push: req.body}, {new: true}, (error, group) => {
+    var ObjectId = require('mongoose').Types.ObjectId;
+    var objId = new ObjectId((req.params.group_id.length < 12) ? "123456789012" : req.params.group_id);
+    Group.findOneAndUpdate({$or: [{name: req.params.group_id}, {_id: objId}]}, {$push: req.body}, {new: true}, (error, group) => {
         if (error) {
             res.status(500);
             console.log(error);
@@ -61,7 +64,9 @@ exports.add_group_userList_item = (req, res) => {
 }
 
 exports.remove_group_userList_item = (req, res) => {
-    Group.findOneAndUpdate({_id: req.params.group_name}, {$pull: req.body}, {new: true}, (error, group) => {
+    var ObjectId = require('mongoose').Types.ObjectId;
+    var objId = new ObjectId((req.params.group_id.length < 12) ? "123456789012" : req.params.group_id);
+    Group.findOneAndUpdate({$or: [{name: req.params.group_id}, {_id: objId}]}, {$pull: req.body}, {new: true}, (error, group) => {
         if (error) {
             res.status(500);
             console.log(error);
@@ -74,7 +79,9 @@ exports.remove_group_userList_item = (req, res) => {
 }
 
 exports.delete_group = (req, res) => {
-    Group.remove({_id: req.params.group_id}, (error) => {
+    var ObjectId = require('mongoose').Types.ObjectId;
+    var objId = new ObjectId((req.params.group_id.length < 12) ? "123456789012" : req.params.group_id);
+    Group.remove({$or: [{name: req.params.group_id}, {_id: objId}]}, (error) => {
         if (error) {
             res.status(500);
             console.log(error);
@@ -82,6 +89,22 @@ exports.delete_group = (req, res) => {
         } else {
             res.status(200);
             res.json({message: "Groupe supprimé"});
+        }
+    })
+}
+
+exports.draw_donee = (req, res) => {
+    Group.find({userList: req.params.user_name}, (error, group) => {
+        if (error) {
+            res.status(500);
+            console.log(error);
+            res.json({message: "Erreur serveur."});
+        } else {
+            group.forEach((item) => {
+                userController.appointDonee(res, item.userList, req.params.user_name);
+            })
+            res.json({message: "Someone has been chosen."})
+            res.status(200);
         }
     })
 }
